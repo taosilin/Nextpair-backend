@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.backend.dao.FrameMapper">
+    <resultMap id="BaseResultMap" type="com.example.backend.model.Frame">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="frameID" jdbcType="VARCHAR" property="frameID" />
+        <result column="frameName" jdbcType="VARCHAR" property="frameName" />
+        <result column="price" jdbcType="DECIMAL" property="price" />
+        <result column="material" jdbcType="VARCHAR" property="material" />
+        <result column="shape" jdbcType="VARCHAR" property="shape" />
+        <result column="nosePad" jdbcType="VARCHAR" property="nosePad" />
+        <result column="dimension" jdbcType="VARCHAR" property="dimension" />
+        <result column="state" jdbcType="VARCHAR" property="state" />
+        <result column="imageList" jdbcType="VARCHAR" property="imageList" />
+        <result column="description" jdbcType="VARCHAR" property="description" />
+        <result column="classification" jdbcType="VARCHAR" property="classification" />
+        <result column="tab" jdbcType="VARCHAR" property="tab" />
+        <result column="coverImage" jdbcType="VARCHAR" property="coverImage" />
+        <result column="sketch" jdbcType="VARCHAR" property="sketch" />
+        <result column="keyword" jdbcType="VARCHAR" property="keyword" />
+    </resultMap>
+
+    <!--管理员 添加镜框-->
+    <insert id="addFrame" parameterType="com.example.backend.model.Frame">
+        INSERT INTO frame ( frameID,frameName,price,material,shape,nosePad,dimension,state,imageList,description,classification,tab,coverImage,sketch,keyword )
+        values (#{frameID},#{frameName},#{price},#{material},#{shape},#{nosePad},#{dimension},#{state},#{imageList},#{description},#{classification},#{tab},#{coverImage},#{sketch},#{keyword})
+    </insert>
+
+    <!--用户/管理员 镜框列表+好评数量 分页-->
+    <select id="frameList" resultType="com.example.backend.model.Frame">
+        SELECT
+            fr.* ,IFNULL(cm.cout,0) as commmentCout
+        FROM
+            frame fr
+        LEFT JOIN (SELECT count(*) as cout , productID FROM comment WHERE evaluation > 1 GROUP BY productID ) cm on fr.frameID = cm.productID
+        limit #{page},#{size}
+    </select>
+
+    <!--按ID查找镜框-->
+    <select id="findByFrameID" parameterType="String" resultType="com.example.backend.model.Frame">
+        SELECT *
+        FROM frame
+        WHERE frameID=#{frameID}
+    </select>
+
+    <!--编辑镜框信息-->
+    <update id="updateFrame" parameterType="com.example.backend.model.Frame">
+        UPDATE frame
+        SET frameName=#{frameName},price=#{price},material=#{material},shape=#{shape},nosePad=#{nosePad},dimension=#{dimension},state=#{state},imageList=#{imageList},description=#{description},classification=#{classification},tab=#{tab},coverImage=#{coverImage},sketch=#{sketch},keyword=#{keyword}
+        WHERE frameID=#{frameID}
+    </update>
+
+    <!--按ID删除镜框-->
+    <delete id="deleteFrame" parameterType="String">
+        DELETE FROM frame WHERE frameID=#{frameID}
+    </delete>
+
+    <!--按状态筛选镜框数量-->
+    <select id="frameNum" parameterType="String" resultType="Integer">
+        SELECT COUNT(*)
+        FROM frame
+        WHERE state=#{state}
+    </select>
+
+    <!--查询镜框总数-->
+    <select id="frameTotal" resultType="Integer">
+        SELECT COUNT(*) FROM frame
+    </select>
+
+    <!--按镜框名称搜索-->
+    <select id="searchByFrameName" parameterType="String" resultType="com.example.backend.model.Frame">
+        SELECT
+            fr.* ,IFNULL(cm.cout,0) as commmentCout
+        FROM
+            frame fr
+        LEFT JOIN (SELECT count(*) as cout , productID FROM comment WHERE evaluation > 1 GROUP BY productID ) cm on fr.frameID = cm.productID
+        WHERE frameName like #{searchString}
+    </select>
+
+    <!--用户前端 按分类筛选镜框-->
+    <select id="findByFrameClass" resultType="com.example.backend.model.Frame">
+        SELECT
+            fr.* ,IFNULL(cm.cout,0) as commmentCout
+        FROM
+            frame fr
+        LEFT JOIN (SELECT count(*) as cout , productID FROM comment WHERE evaluation > 1 GROUP BY productID ) cm on fr.frameID = cm.productID
+        WHERE classification like #{classification} AND state=#{state} order by price
+        limit #{page},#{size}
+    </select>
+</mapper>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.backend.dao.OrderFrameMapper">
+    <resultMap id="BaseResultMap" type="com.example.backend.model.OrderFrame">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="orderID" jdbcType="VARCHAR" property="orderID" />
+        <result column="frameID" jdbcType="VARCHAR" property="frameID" />
+        <result column="lensID" jdbcType="VARCHAR" property="lensID" />
+        <result column="specID" jdbcType="VARCHAR" property="specID" />
+        <result column="state" jdbcType="VARCHAR" property="state" />
+        <result column="num" jdbcType="INTEGER" property="num" />
+        <result column="price" jdbcType="DECIMAL" property="price" />
+        <result column="actualPayment" jdbcType="DECIMAL" property="actualPayment" />
+        <result column="leftDegree" jdbcType="DECIMAL" property="leftDegree" />
+        <result column="rightDegree" jdbcType="DECIMAL" property="rightDegree" />
+        <result column="interpupillary" jdbcType="INTEGER" property="interpupillary" />
+        <result column="leftAstigmatism" jdbcType="DECIMAL" property="leftAstigmatism" />
+        <result column="rightAstigmatism" jdbcType="DECIMAL" property="rightAstigmatism" />
+        <result column="leftAxis" jdbcType="INTEGER" property="leftAxis" />
+        <result column="rightAxis" jdbcType="INTEGER" property="rightAxis" />
+    </resultMap>
+
+    <insert id="addOrderFrame" parameterType="com.example.backend.model.OrderFrame">
+        INSERT INTO orderFrame ( orderID,frameID,lensID,specID,state,num,price,actualPayment,leftDegree,rightDegree,interpupillary,leftAstigmatism,rightAstigmatism,leftAxis,rightAxis )
+        values ( #{orderID},#{frameID},#{lensID},#{specID},#{state},#{num},#{price},#{actualPayment},#{leftDegree},#{rightDegree},#{interpupillary},#{leftAstigmatism},#{rightAstigmatism},#{leftAxis},#{rightAxis} )
+    </insert>
+
+    <select id="findOrderFrame" parameterType="String" resultType="com.example.backend.web.model.OrderFrameResult">
+        SELECT o.frameID,f.frameName,o.lensID,o.specID,o.state,o.num,o.price,o.actualPayment,o.leftDegree,o.rightDegree,o.interpupillary,o.leftAstigmatism,o.rightAstigmatism,o.leftAxis,o.rightAxis,s.productSpec,s.specImage,c.colorName,l.lensName,l.refractiveIndex
+        FROM orderFrame as o join spec as s on (o.specID=s.specID) join frame as f on (o.frameID=f.frameID) join color as c on (s.productSpec=c.colorID) join lens as l on (o.lensID=l.lensID)
+        WHERE orderID=#{orderID}
+    </select>
+
+
+</mapper>

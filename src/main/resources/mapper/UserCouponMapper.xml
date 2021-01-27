@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.backend.dao.UserCouponMapper">
+    <resultMap id="BaseResultMap" type="com.example.backend.model.UserCoupon">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="userID" jdbcType="VARCHAR" property="userID" />
+        <result column="couponID" jdbcType="VARCHAR" property="couponID" />
+        <result column="state" jdbcType="INTEGER" property="state" />
+        <result column="receiveTime" jdbcType="DATE" property="receiveTime" />
+        <result column="deadline" jdbcType="DATE" property="deadline" />
+
+    </resultMap>
+    <!--用户领取优惠券-->
+    <insert id="getCoupon" parameterType="com.example.backend.model.UserCoupon" >
+        INSERT INTO userCoupon ( userID,couponID,state,receiveTime,deadline ) values(#{userID},#{couponID},#{state},#{receiveTime},#{deadline})
+    </insert>
+
+    <!--用户未过期的优惠券-->
+    <select id="couponList" parameterType="String" resultType="com.example.backend.web.model.UserCouponResult">
+        SELECT c.couponID,c.couponName,c.restriction,c.discount,c.description,u.receiveTime,u.deadline
+        FROM userCoupon as u join coupon as c on (u.couponID=c.couponID)
+        WHERE u.userID=#{userID} AND u.state='1'
+    </select>
+
+    <!--用户优惠券状态变更-->
+    <update id="updateCouponState" parameterType="String">
+        UPDATE userCoupon
+        SET state=#{state}
+        WHERE userID=#{userID} AND couponID=#{couponID}
+    </update>
+
+    <!--用户优惠券过期-->
+    <update id="couponExpired" parameterType="String">
+        UPDATE userCoupon
+        SET state='0'
+        WHERE userID=#{userID} AND state='1' AND to_days(now())>to_days(deadline)
+    </update>
+
+</mapper>

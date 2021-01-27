@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.backend.dao.FrameLensMapper">
+    <resultMap id="BaseResultMap" type="com.example.backend.model.FrameLens">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="frameID" jdbcType="VARCHAR" property="frameID" />
+        <result column="lensID" jdbcType="VARCHAR" property="lensID" />
+
+
+    </resultMap>
+
+    <insert id="addFrameLens" parameterType="com.example.backend.model.FrameLens" >
+        INSERT INTO frameLens ( frameID,lensID ) values(#{frameID},#{lensID})
+    </insert>
+
+    <select id="lensList" parameterType="String" resultType="com.example.backend.model.Lens">
+        SELECT l.lensID,l.lensName,l.price,l.refractiveIndex,l.material,l.radian,l.variety,l.film,l.design,l.state,l.description
+        FROM frameLens as f join lens as l on (f.lensID=l.lensID)
+        WHERE f.frameID=#{frameID}
+    </select>
+
+    <!--用户可选镜片前端显示-->
+    <select id="enabledLens" resultType="com.example.backend.model.Lens">
+        SELECT l.lensID,l.lensName,l.price,l.refractiveIndex,l.material,l.radian,l.variety,l.film,l.design,l.state,l.description,l.descriptionB,l.deliveryTime,l.sphMin,l.sphMax,l.cylMin,l.cylMax,l.classification
+        FROM frameLens as f join lens as l on (f.lensID=l.lensID)
+        WHERE f.frameID=#{frameID}
+    </select>
+
+    <delete id="deleteFrameLens" parameterType="com.example.backend.model.FrameLens">
+        DELETE FROM frameLens WHERE frameID=#{frameID} AND lensID=#{lensID}
+    </delete>
+
+    <!--根据frameID删除-->
+    <delete id="deleteByFrameID" parameterType="String">
+        DELETE FROM frameLens WHERE frameID=#{frameID}
+    </delete>
+
+    <!--根据lensID删除-->
+    <delete id="deleteByLensID" parameterType="String">
+        DELETE FROM frameLens WHERE lensID=#{lensID}
+    </delete>
+
+</mapper>

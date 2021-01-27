@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.backend.dao.ColorMapper">
+    <resultMap id="BaseResultMap" type="com.example.backend.model.Color">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="colorID" jdbcType="INTEGER" property="colorID" />
+        <result column="colorName" jdbcType="VARCHAR" property="colorName" />
+        <result column="colorImage" jdbcType="VARCHAR" property="colorImage" />
+
+    </resultMap>
+
+    <!--添加颜色-->
+    <insert id="addColor" parameterType="com.example.backend.model.Color">
+        INSERT INTO color (colorID,colorName,colorImage)
+        values (#{colorID},#{colorName},#{colorImage})
+    </insert>
+
+    <!--（管理员）镜框颜色列表-->
+    <select id="colorList" resultType="com.example.backend.model.Color">
+        SELECT *
+        FROM color
+        limit #{page},#{size}
+    </select>
+
+    <update id="updateColor" parameterType="com.example.backend.model.Color">
+        UPDATE color
+        SET colorName=#{colorName},colorImage=#{colorImage}
+        WHERE colorID=#{colorID}
+    </update>
+
+    <delete id="deleteColor" parameterType="Integer">
+        DELETE FROM color
+        WHERE colorID=#{colorID}
+    </delete>
+
+    <!--颜色总数-->
+    <select id="colorTotal" resultType="Integer">
+        SELECT COUNT(*) FROM color
+    </select>
+
+    <!--按ID查找颜色-->
+    <select id="findByColorID" parameterType="Integer" resultType="com.example.backend.model.Color">
+        SELECT *
+        FROM color
+        WHERE colorID=#{colorID}
+    </select>
+</mapper>

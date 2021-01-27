@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.backend.dao.CouponMapper">
+    <resultMap id="BaseResultMap" type="com.example.backend.model.Coupon">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="couponID" jdbcType="VARCHAR" property="couponID" />
+        <result column="couponName" jdbcType="VARCHAR" property="couponName" />
+        <result column="restriction" jdbcType="DECIMAL" property="restriction" />
+        <result column="discount" jdbcType="DECIMAL" property="discount" />
+        <result column="description" jdbcType="VARCHAR" property="description" />
+        <result column="productType" jdbcType="VARCHAR" property="productType" />
+        <result column="timeLimit" jdbcType="INTEGER" property="timeLimit" />
+        <result column="couponCode" jdbcType="VARCHAR" property="couponCode" />
+        <result column="num" jdbcType="INTEGER" property="num" />
+        <result column="remain" jdbcType="INTEGER" property="remain" />
+        <result column="couponType" jdbcType="VARCHAR" property="couponType" />
+    </resultMap>
+
+    <insert id="addCoupon" parameterType="com.example.backend.model.Coupon" >
+        INSERT INTO coupon ( couponID,couponName,restriction,discount,description,productType,timeLimit,couponCode,num,remain,couponType )
+        values(#{couponID},#{couponName},#{restriction},#{discount},#{description},#{productType},#{timeLimit},#{couponCode},#{num},#{remain},#{couponType})
+    </insert>
+
+    <select id="findByCouponID" parameterType="String" resultType="com.example.backend.model.Coupon">
+        SELECT *
+        FROM coupon
+        WHERE couponID=#{couponID}
+    </select>
+
+    <select id="couponList" resultType="com.example.backend.model.Coupon">
+        SELECT *
+        FROM coupon
+        limit #{page},#{size}
+    </select>
+
+    <delete id="deleteCoupon" parameterType="String">
+        DELETE FROM coupon WHERE couponID=#{couponID}
+    </delete>
+
+    <!--优惠券总数-->
+    <select id="couponTotal" resultType="Integer">
+        SELECT COUNT(*) FROM coupon
+    </select>
+
+    <!--按优惠券码查找优惠券-->
+    <select id="findByCouponCode" parameterType="String" resultType="com.example.backend.model.Coupon">
+        SELECT *
+        FROM coupon
+        WHERE couponCode=#{couponCode}
+    </select>
+
+    <!--用户领取优惠券数量扣减-->
+    <update id="updateCouponNum" parameterType="String">
+        UPDATE coupon
+        SET remain=remain-1
+        WHERE couponID=#{couponID} AND remain-1>=0
+    </update>
+
+</mapper>

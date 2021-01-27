@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.backend.dao.OrderProductMapper">
+    <resultMap id="BaseResultMap" type="com.example.backend.model.OrderProduct">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="orderID" jdbcType="VARCHAR" property="orderID" />
+        <result column="productID" jdbcType="VARCHAR" property="productID" />
+        <result column="specID" jdbcType="VARCHAR" property="specID" />
+        <result column="state" jdbcType="VARCHAR" property="state" />
+        <result column="num" jdbcType="INTEGER" property="num" />
+        <result column="price" jdbcType="DECIMAL" property="price" />
+
+    </resultMap>
+
+    <insert id="addOrderProduct" parameterType="com.example.backend.model.OrderProduct">
+        INSERT INTO orderProduct ( orderID,productID,specID,state,num,price )
+        values ( #{orderID},#{productID},#{specID},#{state},#{num},#{price} )
+    </insert>
+
+    <select id="findOrderProduct" parameterType="String" resultType="com.example.backend.web.model.OrderProductResult">
+        SELECT o.productID,o.specID,o.state,o.num,o.price,s.productSpec,s.specImage
+        FROM orderProduct as o join spec as s on (o.specID=s.specID)
+        WHERE orderID=#{orderID}
+    </select>
+</mapper>

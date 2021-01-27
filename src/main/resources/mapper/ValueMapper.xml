@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.backend.dao.ValueMapper">
+    <resultMap id="BaseResultMap" type="com.example.backend.model.Value">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="valueID" jdbcType="VARCHAR" property="valueID" />
+        <result column="attributeID" jdbcType="VARCHAR" property="attributeID" />
+        <result column="valueName" jdbcType="VARCHAR" property="valueName" />
+
+    </resultMap>
+
+    <insert id="addValue" parameterType="com.example.backend.model.Value">
+        INSERT INTO valueTable ( valueID,attributeID,valueName )
+        values (#{valueID},#{attributeID},#{valueName})
+    </insert>
+
+    <select id="findByAttribute" parameterType="String" resultType="com.example.backend.model.Value">
+        SELECT valueID,attributeID,valueName
+        FROM valueTable
+        WHERE attributeID=#{attributeID}
+    </select>
+
+    <delete id="deleteValue" parameterType="String">
+        DELETE FROM valueTable WHERE valueID=#{valueID}
+    </delete>
+
+    <delete id="deleteByAttribute" parameterType="String">
+        DELETE FROM valueTable WHERE attributeID=#{attributeID}
+    </delete>
+
+</mapper>

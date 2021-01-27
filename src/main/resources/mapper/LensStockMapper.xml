@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.backend.dao.LensStockMapper">
+    <resultMap id="BaseResultMap" type="com.example.backend.model.LensStock">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="stockID" jdbcType="VARCHAR" property="stockID" />
+        <result column="lensID" jdbcType="VARCHAR" property="lensID" />
+        <result column="sph" jdbcType="DECIMAL" property="sph" />
+        <result column="cyl" jdbcType="DECIMAL" property="cyl" />
+        <result column="stock" jdbcType="INTEGER" property="stock" />
+        <result column="warning" jdbcType="INTEGER" property="warning" />
+    </resultMap>
+
+    <insert id="addLensStock" parameterType="com.example.backend.model.LensStock">
+        INSERT INTO lensStock ( stockID,lensID,sph,cyl,stock,warning )
+        values ( #{stockID},#{lensID},#{sph},#{cyl},#{stock},#{warning} )
+    </insert>
+
+    <update id="updateLensStock" parameterType="com.example.backend.model.LensStock">
+        UPDATE lensStock
+        SET stock=#{stock},warning=#{warning}
+        WHERE stockID=#{stockID}
+    </update>
+
+    <delete id="deleteLensStock" parameterType="String">
+        DELETE FROM lensStock WHERE stockID=#{stockID}
+    </delete>
+
+    <select id="stockList" resultType="com.example.backend.model.LensStock">
+        SELECT *
+        FROM lensStock
+        WHERE lensID=#{lensID}
+        order by sph desc, cyl desc
+        limit #{page},#{size}
+    </select>
+
+    <!--一类镜片的库存信息总条数-->
+    <select id="lensStockTotal" parameterType="String" resultType="Integer">
+        SELECT COUNT(*)
+        FROM lensStock
+        WHERE lensID=#{lensID}
+    </select>
+
+    <select id="cylFilter" resultType="Integer">
+        SELECT stock
+        FROM lensStock
+        WHERE lensID=#{lensID} AND cyl=#{cyl}
+        order by sph DESC
+    </select>
+
+    <!--查询库存不足的镜片SKU-->
+    <select id="lensStockWarning" resultType="com.example.backend.model.LensStock">
+        SELECT *
+        FROM lensStock
+        WHERE stock &lt;= warning
+    </select>
+
+</mapper>

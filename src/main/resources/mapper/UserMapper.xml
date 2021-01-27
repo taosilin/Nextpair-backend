@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.backend.dao.UserMapper">
+    <resultMap id="BaseResultMap" type="com.example.backend.model.User">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="userID" jdbcType="VARCHAR" property="userID" />
+        <result column="phoneNumber" jdbcType="VARCHAR" property="phoneNumber" />
+        <result column="nickName" jdbcType="VARCHAR" property="nickName" />
+        <result column="gender" jdbcType="VARCHAR" property="gender" />
+        <result column="avatarUrl" jdbcType="VARCHAR" property="avatarUrl" />
+        <result column="registrationTime" jdbcType="DATE" property="registrationTime" />
+
+    </resultMap>
+
+    <select id="findByUserID" parameterType="String" resultType="com.example.backend.model.User">
+        SELECT * FROM user WHERE userID=#{userID}
+    </select>
+
+
+    <insert id="addUser" parameterType="com.example.backend.model.User" >
+        INSERT INTO user ( userID,phoneNumber,nickName,gender,avatarUrl,registrationTime ) values(#{userID},#{phoneNumber},#{nickName},#{gender},#{avatarUrl},#{registrationTime})
+    </insert>
+
+    
+</mapper>

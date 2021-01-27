@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.backend.dao.AddressMapper">
+    <resultMap id="BaseResultMap" type="com.example.backend.model.Address">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="addressID" jdbcType="VARCHAR" property="addressID" />
+        <result column="userID" jdbcType="VARCHAR" property="userID" />
+        <result column="receiver" jdbcType="VARCHAR" property="receiver" />
+        <result column="telephone" jdbcType="VARCHAR" property="telephone" />
+        <result column="province" jdbcType="VARCHAR" property="province" />
+        <result column="city" jdbcType="VARCHAR" property="city" />
+        <result column="district" jdbcType="VARCHAR" property="district" />
+        <result column="detail" jdbcType="VARCHAR" property="detail" />
+        <result column="defaultAdd" jdbcType="VARCHAR" property="defaultAdd" />
+        <result column="zipCode" jdbcType="VARCHAR" property="zipCode" />
+
+    </resultMap>
+
+    <!--新增地址-->
+    <insert id="addAddress" parameterType="com.example.backend.model.Address" >
+        INSERT INTO address ( addressID,userID,receiver,telephone,province,city,district,detail,defaultAdd,zipCode )
+        values ( #{addressID},#{userID},#{receiver},#{telephone},#{province},#{city},#{district},#{detail},#{defaultAdd},#{zipCode} )
+    </insert>
+
+    <!--删除地址-->
+    <delete id="deleteByAddressID" parameterType="String">
+        DELETE FROM address WHERE addressID = #{addressID}
+    </delete>
+
+    <!--编辑地址-->
+    <update id="updateAddress" parameterType="com.example.backend.model.Address">
+        UPDATE address
+        SET receiver=#{receiver},telephone=#{telephone},province=#{province},city=#{city},district=#{district},detail=#{detail}
+        WHERE addressID=#{addressID}
+    </update>
+
+    <!--用户地址列表-->
+    <select id="userAddressList" parameterType="String" resultType="com.example.backend.model.Address">
+        SELECT *
+        FROM address
+        WHERE userID=#{userID}
+        order by defaultAdd desc
+    </select>
+
+    <!--根据ID查询地址详情-->
+    <select id="findByAddressID" parameterType="String" resultType="com.example.backend.model.Address">
+        SELECT *
+        FROM address
+        WHERE addressID=#{addressID}
+    </select>
+
+    <!--查找某用户的默认地址-->
+    <select id="findDefaultAdd" parameterType="String" resultType="com.example.backend.model.Address">
+        SELECT *
+        FROM address
+        WHERE userID=#{userID} AND defaultAdd='1'
+    </select>
+
+    <!--修改默认地址-->
+    <update id="modifyDefaultAdd" parameterType="String">
+        UPDATE address
+        SET defaultAdd=#{defaultAdd}
+        WHERE addressID=#{addressID}
+    </update>
+
+</mapper>

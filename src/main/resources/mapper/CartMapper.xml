@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.backend.dao.CartMapper">
+    <resultMap id="BaseResultMap" type="com.example.backend.model.Cart">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <result column="userID" jdbcType="VARCHAR" property="userID" />
+        <result column="productID" jdbcType="VARCHAR" property="productID" />
+        <result column="specID" jdbcType="VARCHAR" property="specID" />
+        <result column="num" jdbcType="INTEGER" property="num" />
+        <result column="lensID" jdbcType="VARCHAR" property="lensID" />
+        <result column="leftDegree" jdbcType="DECIMAL" property="leftDegree" />
+        <result column="rightDegree" jdbcType="DECIMAL" property="rightDegree" />
+        <result column="interpupillary" jdbcType="INTEGER" property="interpupillary" />
+        <result column="leftAstigmatism" jdbcType="DECIMAL" property="leftAstigmatism" />
+        <result column="rightAstigmatism" jdbcType="DECIMAL" property="rightAstigmatism" />
+        <result column="leftAxis" jdbcType="INTEGER" property="leftAxis" />
+        <result column="rightAxis" jdbcType="INTEGER" property="rightAxis" />
+    </resultMap>
+
+    <insert id="addCart" parameterType="com.example.backend.model.Cart" >
+        INSERT INTO cart (userID,productID,specID,num,lensID,leftDegree,rightDegree,interpupillary,leftAstigmatism,rightAstigmatism,leftAxis,rightAxis)
+        values (#{userID},#{productID},#{specID},#{num},#{lensID},#{leftDegree},#{rightDegree},#{interpupillary},#{leftAstigmatism},#{rightAstigmatism},#{leftAxis},#{rightAxis})
+    </insert>
+
+    <delete id="deleteCart" parameterType="com.example.backend.model.Cart">
+        DELETE FROM cart
+        WHERE userID=#{userID} AND productID=#{productID} AND specID=#{specID} AND lensID=#{lensID} AND leftDegree=#{leftDegree} AND rightDegree=#{rightDegree} AND interpupillary=#{interpupillary} AND leftAstigmatism=#{leftAstigmatism} AND rightAstigmatism=#{rightAstigmatism} AND leftAxis=#{leftAxis} AND rightAxis=#{rightAxis}
+    </delete>
+
+    <update id="updateCart" parameterType="com.example.backend.model.Cart">
+        UPDATE cart
+        SET num=#{num}
+        WHERE userID=#{userID} AND productID=#{productID} AND specID=#{specID} AND lensID=#{lensID} AND leftDegree=#{leftDegree} AND rightDegree=#{rightDegree} AND interpupillary=#{interpupillary} AND leftAstigmatism=#{leftAstigmatism} AND rightAstigmatism=#{rightAstigmatism} AND leftAxis=#{leftAxis} AND rightAxis=#{rightAxis}
+    </update>
+
+    <select id="findByUserID" parameterType="String" resultType="com.example.backend.model.Cart">
+        SELECT *
+        FROM cart
+        WHERE userID=#{userID}
+    </select>
+
+    <!--购物车里找同款-->
+    <select id="findCart" parameterType="com.example.backend.model.Cart" resultType="com.example.backend.model.Cart">
+        SELECT *
+        FROM cart
+        WHERE userID=#{userID} AND productID=#{productID} AND specID=#{specID} AND lensID=#{lensID} AND leftDegree=#{leftDegree} AND rightDegree=#{rightDegree} AND interpupillary=#{interpupillary} AND leftAstigmatism=#{leftAstigmatism} AND rightAstigmatism=#{rightAstigmatism} AND leftAxis=#{leftAxis} AND rightAxis=#{rightAxis}
+    </select>
+
+</mapper>

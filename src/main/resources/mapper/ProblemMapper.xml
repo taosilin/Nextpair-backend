@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.backend.dao.ProblemMapper">
+    <resultMap id="BaseResultMap" type="com.example.backend.model.Problem">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="problemID" jdbcType="INTEGER" property="problemID" />
+        <result column="problemContent" jdbcType="VARCHAR" property="problemContent" />
+        <result column="answer" jdbcType="VARCHAR" property="answer" />
+        <result column="classification" jdbcType="VARCHAR" property="classification" />
+        <result column="keyword" jdbcType="VARCHAR" property="keyword" />
+
+    </resultMap>
+
+    <insert id="addProblem" parameterType="com.example.backend.model.Problem">
+        INSERT INTO problem (problemID,problemContent,answer,classification,keyword)
+        values (#{problemID},#{problemContent},#{answer},#{classification},#{keyword})
+    </insert>
+
+    <select id="problemList" resultType="com.example.backend.model.Problem">
+        SELECT *
+        FROM problem
+        limit #{page},#{size}
+    </select>
+
+    <update id="updateProblem" parameterType="com.example.backend.model.Problem">
+        UPDATE problem
+        SET problemContent=#{problemContent},answer=#{answer},classification=#{classification},keyword=#{keyword}
+        WHERE problemID=#{problemID}
+    </update>
+
+    <delete id="deleteProblem" parameterType="Integer">
+        DELETE FROM problem WHERE problemID=#{problemID}
+    </delete>
+
+    <!--常见问题总数-->
+    <select id="problemTotal" resultType="Integer">
+        SELECT COUNT(*) FROM problem
+    </select>
+</mapper>

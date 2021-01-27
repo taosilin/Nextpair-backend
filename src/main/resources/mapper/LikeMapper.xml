@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.backend.dao.LikeMapper">
+    <resultMap id="BaseResultMap" type="com.example.backend.model.Like">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <result column="userID" jdbcType="VARCHAR" property="userID" />
+        <result column="productID" jdbcType="VARCHAR" property="productID" />
+
+    </resultMap>
+
+    <insert id="addLike" parameterType="com.example.backend.model.Like" >
+        INSERT INTO likeTable (userID,productID)
+        values (#{userID},#{productID})
+    </insert>
+
+    <delete id="deleteLike" parameterType="com.example.backend.model.Like">
+        DELETE FROM likeTable WHERE userID=#{userID} AND productID=#{productID}
+    </delete>
+
+    <select id="likeList" parameterType="String" resultType="com.example.backend.model.Product">
+        SELECT p.productID,p.productName,p.imageList,p.description,p.classification,p.tab
+        FROM likeTable as l join product as p on (l.productID=p.productID)
+        WHERE l.userID=#{userID}
+    </select>
+
+    <select id="likeFrameList" parameterType="String" resultType="com.example.backend.model.Frame">
+        SELECT f.frameID,f.frameName,f.price,f.material,f.shape,f.nosePad,f.dimension,f.state,f.imageList,f.description,f.classification,f.tab,f.coverImage,f.sketch,f.keyword
+        FROM likeTable as l join frame as f on (l.productID=f.frameID)
+        WHERE l.userID=#{userID}
+    </select>
+    
+    <select id="findUserIsLike" resultType="int">
+        SELECT
+            count(productID) as cout
+        FROM
+            likeTable
+        WHERE
+            productID = #{productID}
+            AND userID = #{userID}
+    </select>
+</mapper>

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.backend.dao.FrameColorMapper">
+    <resultMap id="BaseResultMap" type="com.example.backend.model.FrameColor">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="frameID" jdbcType="VARCHAR" property="frameID" />
+        <result column="colorID" jdbcType="INTEGER" property="colorID" />
+        <result column="price" jdbcType="DECIMAL" property="price" />
+        <result column="state" jdbcType="VARCHAR" property="state" />
+        <result column="stock" jdbcType="INTEGER" property="stock" />
+        <result column="warning" jdbcType="INTEGER" property="warning" />
+        <result column="image" jdbcType="VARCHAR" property="image" />
+
+    </resultMap>
+
+    <insert id="addFrameColor" parameterType="com.example.backend.model.FrameColor">
+        INSERT INTO frameColor (frameID,colorID,price,state,stock,warning,image)
+        values (#{frameID},#{colorID},#{price},#{state},#{stock},#{warning},#{image})
+    </insert>
+
+    <update id="updateFrameColor" parameterType="com.example.backend.model.FrameColor">
+        UPDATE frameColor
+        SET price=#{price},state=#{state},stock=#{stock},warning=#{warning},image=#{image}
+        WHERE frameID=#{frameID} AND colorID=#{colorID}
+    </update>
+
+    <delete id="deleteFrameColor">
+        DELETE FROM frameColor
+        WHERE frameID=#{frameID} AND colorID=#{colorID}
+    </delete>
+
+    <delete id="deleteByFrameID" parameterType="String">
+        DELETE FROM frameColor
+        WHERE frameID=#{frameID}
+    </delete>
+
+    <select id="findByFrameID" parameterType="String" resultType="com.example.backend.web.model.FrameColorResult">
+        SELECT c.colorID,c.colorName,c.colorImage,f.price,f.state,f.stock,f.warning,f.image
+        FROM frameColor as f join color as c on (f.colorID=c.colorID)
+        WHERE f.frameID=#{frameID}
+    </select>
+</mapper>

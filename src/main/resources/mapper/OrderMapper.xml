@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.backend.dao.OrderMapper">
+    <resultMap id="BaseResultMap" type="com.example.backend.model.Order">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="orderID" jdbcType="VARCHAR" property="orderID" />
+        <result column="userID" jdbcType="VARCHAR" property="userID" />
+        <result column="addressID" jdbcType="VARCHAR" property="addressID" />
+        <result column="couponID" jdbcType="VARCHAR" property="couponID" />
+
+        <result column="totalAmount" jdbcType="DECIMAL" property="totalAmount" />
+        <result column="actualPayment" jdbcType="DECIMAL" property="actualPayment" />
+
+        <result column="orderTime" jdbcType="TIMESTAMP" property="orderTime" />
+        <result column="paymentTime" jdbcType="TIMESTAMP" property="paymentTime" />
+        <result column="receiptTime" jdbcType="TIMESTAMP" property="receiptTime" />
+
+        <result column="state" jdbcType="VARCHAR" property="state" />
+        <result column="remark" jdbcType="VARCHAR" property="remark" />
+        <result column="courierID" jdbcType="VARCHAR" property="courierID" />
+        <result column="deliveryMethod" jdbcType="VARCHAR" property="deliveryMethod" />
+        <result column="prepayID" jdbcType="VARCHAR" property="prepayID" />
+    </resultMap>
+
+    <!--添加订单-->
+    <insert id="addOrder" parameterType="com.example.backend.model.Order">
+        INSERT INTO orderTable ( orderID,userID,addressID,couponID,totalAmount,actualPayment,orderTime,paymentTime,receiptTime,state,remark,courierID,deliveryMethod,prepayID)
+        values (#{orderID},#{userID},#{addressID},#{couponID},#{totalAmount},#{actualPayment},#{orderTime},#{paymentTime},#{receiptTime},#{state},#{remark},#{courierID},#{deliveryMethod},#{prepayID})
+    </insert>
+
+    <!--根据ID查询订单详情-->
+    <select id="findByOrderID" parameterType="String" resultType="com.example.backend.model.Order">
+        SELECT *
+        FROM orderTable
+        WHERE orderID=#{orderID}
+    </select>
+
+    <!--查询用户全部订单-->
+    <select id="findByUserID" parameterType="String" resultType="com.example.backend.model.Order">
+        SELECT *
+        FROM orderTable
+        WHERE userID=#{userID}
+        order by orderTime desc
+    </select>
+
+    <!--全部订单 列表 分页-->
+    <select id="orderList" resultType="com.example.backend.model.Order">
+        SELECT *
+        FROM orderTable
+        limit #{page},#{size}
+    </select>
+
+    <update id="updateOrder" parameterType="com.example.backend.model.Order">
+        UPDATE orderTable
+        SET totalAmount=#{totalAmount},state=#{state},remark=#{remark},courierID=#{courierID},deliveryMethod=#{deliveryMethod}
+        WHERE orderID=#{orderID}
+    </update>
+
+    <!--修改订单状态-->
+    <update id="updateOrderState" parameterType="String">
+        UPDATE orderTable
+        SET state=#{state}
+        WHERE orderID=#{orderID}
+    </update>
+
+    <!--用户付款 修改订单状态-->
+    <update id="payOrder" parameterType="com.example.backend.model.Order">
+        UPDATE orderTable
+        SET state=#{state},paymentTime=#{paymentTime}
+        WHERE orderID=#{orderID}
+    </update>
+
+    <!--用户确认收货 修改订单状态-->
+    <update id="confirmOrder" parameterType="com.example.backend.model.Order">
+        UPDATE orderTable
+        SET state=#{state},paymentTime=#{paymentTime}
+        WHERE orderID=#{orderID}
+    </update>
+
+    <!--按状态筛选订单 列表 分页-->
+    <select id="stateFilter" resultType="com.example.backend.model.Order">
+        SELECT *
+        FROM orderTable
+        WHERE state=#{state}
+        limit #{page},#{size}
+    </select>
+
+    <!--查询某状态的订单数量-->
+    <select id="stateOrderNum" parameterType="String" resultType="Integer">
+        SELECT COUNT(*)
+        FROM orderTable
+        WHERE state=#{state}
+    </select>
+
+    <!--订单总数-->
+    <select id="orderTotal" resultType="Integer">
+        SELECT COUNT(*) FROM orderTable
+    </select>
+
+    <!--查询某日全部订单-->
+    <select id="findByDate" parameterType="Date" resultType="com.example.backend.model.Order">
+        SELECT *
+        FROM orderTable
+        WHERE to_days(orderTime)=to_days(#{orderTime})
+    </select>
+
+    <!--查询某日全部付款订单-->
+    <select id="findByPaymentDate" parameterType="Date" resultType="com.example.backend.model.Order">
+        SELECT *
+        FROM orderTable
+        WHERE to_days(paymentTime)=to_days(#{paymentTime})
+    </select>
+
+    <!--查询今日付款订单-->
+    <select id="todayOrder" resultType="com.example.backend.model.Order">
+        SELECT *
+        FROM orderTable
+        WHERE to_days(paymentTime) = to_days(now())
+    </select>
+
+    <!--查询昨日付款订单-->
+    <select id="yesterdayOrder" resultType="com.example.backend.model.Order">
+        SELECT *
+        FROM orderTable
+        WHERE to_days(now())-to_days(paymentTime) = 1
+    </select>
+
+</mapper>

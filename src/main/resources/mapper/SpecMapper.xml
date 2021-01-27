@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.backend.dao.SpecMapper">
+    <resultMap id="BaseResultMap" type="com.example.backend.model.Spec">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="specID" jdbcType="VARCHAR" property="specID" />
+        <result column="productID" jdbcType="VARCHAR" property="productID" />
+        <result column="productSpec" jdbcType="VARCHAR" property="productSpec" />
+        <result column="quantity" jdbcType="INTEGER" property="quantity" />
+        <result column="warning" jdbcType="INTEGER" property="warning" />
+        <result column="price" jdbcType="DECIMAL" property="price" />
+        <result column="specImage" jdbcType="VARCHAR" property="specImage" />
+
+    </resultMap>
+
+    <insert id="addSpec" parameterType="com.example.backend.model.Spec">
+        INSERT INTO spec ( specID,productID,productSpec,quantity,warning,price,specImage )
+        values (#{specID},#{productID},#{productSpec},#{quantity},#{warning},#{price},#{specImage})
+    </insert>
+
+    <select id="specList" parameterType="String" resultType="com.example.backend.model.Spec">
+        SELECT specID,productID,productSpec,quantity,warning,price,specImage
+        FROM spec
+        WHERE productID=#{productID}
+    </select>
+
+    <delete id="deleteSpec" parameterType="String">
+        DELETE FROM spec WHERE specID=#{specID}
+    </delete>
+
+    <!--根据商品ID删除-->
+    <delete id="deleteByProductID" parameterType="String">
+        DELETE FROM spec WHERE productID=#{productID}
+    </delete>
+
+    <update id="updateSpec" parameterType="com.example.backend.model.Spec">
+        UPDATE spec
+        SET quantity=#{quantity},warning=#{warning},price=#{price},specImage=#{specImage}
+        WHERE specID=#{specID}
+    </update>
+
+    <!--查询库存不足的商品SKU-->
+    <select id="productWarning" resultType="com.example.backend.model.Spec">
+        SELECT *
+        FROM spec
+        WHERE quantity &lt;= warning
+    </select>
+
+    <!--根据ID查询SKU-->
+    <select id="findBySpecID" parameterType="String" resultType="com.example.backend.model.Spec">
+        SELECT *
+        FROM spec
+        WHERE specID=#{specID}
+    </select>
+
+    <select id="findFrameSpec" parameterType="String" resultType="com.example.backend.web.model.FrameColorResult">
+        SELECT s.specID,s.productID,c.colorID,c.colorName,c.colorImage,s.price,s.quantity,s.warning,s.specImage
+        FROM spec as s join color as c on (s.productSpec=c.colorID)
+        WHERE specID=#{specID}
+    </select>
+</mapper>

@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.backend.dao.CommentMapper">
+    <resultMap id="BaseResultMap" type="com.example.backend.model.Comment">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="commentID" jdbcType="VARCHAR" property="commentID" />
+        <result column="orderID" jdbcType="VARCHAR" property="orderID" />
+        <result column="productID" jdbcType="VARCHAR" property="productID" />
+        <result column="userID" jdbcType="VARCHAR" property="userID" />
+        <result column="commentTime" jdbcType="TIMESTAMP" property="commentTime" />
+        <result column="commentContent" jdbcType="VARCHAR" property="commentContent" />
+        <result column="evaluation" jdbcType="VARCHAR" property="evaluation" />
+        <result column="commentPhoto" jdbcType="VARCHAR" property="commentPhoto" />
+        <result column="reply" jdbcType="VARCHAR" property="reply" />
+        <result column="replyTime" jdbcType="TIMESTAMP" property="replyTime" />
+        <result column="state" jdbcType="VARCHAR" property="state" />
+        <result column="specID" jdbcType="VARCHAR" property="specID" />
+        <result column="lensID" jdbcType="VARCHAR" property="lensID" />
+    </resultMap>
+
+    <insert id="addComment" parameterType="com.example.backend.model.Comment">
+        INSERT INTO comment ( commentID,orderID,productID,userID,commentTime,commentContent,evaluation,commentPhoto,reply,replyTime,state,specID,lensID )
+        values (#{commentID},#{orderID},#{productID},#{userID},#{commentTime},#{commentContent},#{evaluation},#{commentPhoto},#{reply},#{replyTime},#{state},#{specID},#{lensID})
+    </insert>
+
+    <update id="replyComment" parameterType="com.example.backend.web.model.ReplyRequest">
+        UPDATE comment
+        SET reply=#{reply}, replyTime=#{replyTime}
+        WHERE commentID=#{commentID}
+    </update>
+    
+    <select id="allComment" resultType="com.example.backend.model.Comment">
+        SELECT *
+        FROM comment
+        limit #{page},#{size}
+    </select>
+
+    <!--修改评论状态-->
+    <update id="updateState" parameterType="com.example.backend.model.Comment">
+        UPDATE comment
+        SET state=#{state}
+        WHERE commentID=#{commentID}
+    </update>
+
+    <!--评论总数-->
+    <select id="commentTotal" resultType="Integer">
+        SELECT COUNT(*) FROM comment
+    </select>
+
+    <!--查询商品最新的一条评论-->
+    <select id="latestComment" parameterType="String" resultType="com.example.backend.model.Comment">
+        SELECT *
+        FROM comment
+        WHERE productID=#{productID} AND state='0'
+        order by commentTime desc
+        limit 0,1
+    </select>
+
+    <!--商品评论列表-->
+    <select id="commentList" parameterType="String" resultType="com.example.backend.model.Comment">
+        SELECT *
+        FROM comment
+        WHERE productID=#{productID} AND state='0'
+        order by commentTime desc
+    </select>
+
+    <!--获取商品好评率和评价总数-->
+    <select id="findApprovalRatingAndCommentCoutByProductID" parameterType="String" resultType="java.util.Map">
+        SELECT
+            count(com.commentID) as commentCout,
+            IFNULL(god.goodCout,0) as goodCout,
+            IFNULL(ROUND(god.goodCout/count(com.commentID),2)*100,0) as approvalRating
+        FROM
+            comment com
+            LEFT JOIN ( SELECT COUNT( * ) AS goodCout,productID FROM comment WHERE evaluation > 1 GROUP BY productID ) AS god on com .productID = god.productID
+        WHERE com.productID = #{productID}
+    </select>
+
+</mapper>
