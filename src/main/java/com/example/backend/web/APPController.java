@@ -33,7 +33,7 @@ public class APPController {
         // 微信获取session_key接口地址
         String wxLoginUrl = "https://api.weixin.qq.com/sns/jscode2session";
         // 接口参数
-        String param = "appid=wx9e784305e6f48a50&secret=14eabcb594e6571429c7d67d0a505004&js_code=" + appRequestBody.jsCode + "&grant_type=authorization_code";
+        String param = "appid=wx1b212dd990c8aa46&secret=3001ff6c85ef72adcc2944bac1715c66&js_code=" + appRequestBody.jsCode + "&grant_type=authorization_code";
         // 调用获取session_key接口 请求方式get
         String jsonString = GetPostUntil.sendGet(wxLoginUrl, param);
         System.out.println(jsonString);

@@ -25,7 +25,7 @@ import java.util.Map;
 public class WxServiceImpl implements WxService {
 
     private static Logger longger = LoggerFactory.getLogger("WxService");
-    public static final String SPBILL_CREATE_IP = "129.211.168.202";
+    public static final String SPBILL_CREATE_IP = "198.11.174.200";
     public static final String NOTIFY_URL = "http://from2121.com:8443/order/notify";
     public static final String TRADE_TYPE = "JSAPI";
 
@@ -96,7 +96,7 @@ public class WxServiceImpl implements WxService {
 
             data.put("sign_type", WXPayConstants.MD5);
 
-            String body = "2121眼镜";
+            String body = "NextPair眼镜";
             data.put("body", body);
 
             // 商品详情：商品详细描述，对于使用单品优惠的商户，该字段必须按照规范上传，详见“单品优惠参数说明”

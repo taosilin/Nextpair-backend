@@ -10,7 +10,7 @@ import java.io.InputStream;
 
 public class WXConfigUtil implements WXPayConfig {
     private byte[] certData;
-    public static final String APP_ID = "wx9e784305e6f48a50";
+    public static final String APP_ID = "wx1b212dd990c8aa46";
     public static final String KEY = "Shanhaimianshikeji2121yanjing518";
     public static final String MCH_ID = "1603867722";
 
