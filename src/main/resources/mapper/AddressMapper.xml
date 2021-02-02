@@ -13,6 +13,7 @@
         <result column="city" jdbcType="VARCHAR" property="city" />
         <result column="district" jdbcType="VARCHAR" property="district" />
         <result column="detail" jdbcType="VARCHAR" property="detail" />
+        <result column="detail2" jdbcType="VARCHAR" property="detail2" />
         <result column="defaultAdd" jdbcType="VARCHAR" property="defaultAdd" />
         <result column="zipCode" jdbcType="VARCHAR" property="zipCode" />
 
@@ -20,8 +21,8 @@
 
     <!--新增地址-->
     <insert id="addAddress" parameterType="com.example.backend.model.Address" >
-        INSERT INTO address ( addressID,userID,receiver,telephone,province,city,district,detail,defaultAdd,zipCode )
-        values ( #{addressID},#{userID},#{receiver},#{telephone},#{province},#{city},#{district},#{detail},#{defaultAdd},#{zipCode} )
+        INSERT INTO address ( addressID,userID,receiver,telephone,province,city,district,detail,detail2,defaultAdd,zipCode )
+        values ( #{addressID},#{userID},#{receiver},#{telephone},#{province},#{city},#{district},#{detail},#{detail2},#{defaultAdd},#{zipCode} )
     </insert>
 
     <!--删除地址-->
@@ -32,7 +33,7 @@
     <!--编辑地址-->
     <update id="updateAddress" parameterType="com.example.backend.model.Address">
         UPDATE address
-        SET receiver=#{receiver},telephone=#{telephone},province=#{province},city=#{city},district=#{district},detail=#{detail}
+        SET receiver=#{receiver},telephone=#{telephone},province=#{province},city=#{city},district=#{district},detail=#{detail},detail2=#{detail2}
         WHERE addressID=#{addressID}
     </update>
 
