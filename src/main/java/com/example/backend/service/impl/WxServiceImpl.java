@@ -26,7 +26,7 @@ public class WxServiceImpl implements WxService {
 
     private static Logger longger = LoggerFactory.getLogger("WxService");
     public static final String SPBILL_CREATE_IP = "198.11.174.200";
-    public static final String NOTIFY_URL = "http://from2121.com:8443/order/notify";
+    public static final String NOTIFY_URL = "https://api.nextpair.com:8443/order/notify";
     public static final String TRADE_TYPE = "JSAPI";
 
     @Override

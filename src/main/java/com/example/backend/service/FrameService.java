@@ -3,6 +3,7 @@ package com.example.backend.service;
 import com.example.backend.core.Service;
 import com.example.backend.model.Frame;
 import com.example.backend.web.model.FrameDetail;
+import com.example.backend.web.model.FrameList;
 import com.example.backend.web.model.ProductOverview;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -17,6 +18,6 @@ public interface FrameService extends Service<Frame> {
     ProductOverview frameOverview(); // 镜框商品概览
     Integer frameTotal(); // 查询镜框总数
     String saveImage(MultipartFile imageFile) throws Exception; // 上传镜框图片
-    List<Frame> searchByFrameName(String searchString); // 按镜框名称搜索
-    List<Frame> findByFrameClass(String state,String classification,Integer page,Integer size); // 用户前端 按分类筛选镜框
+    List<FrameList> searchByFrameName(String searchString); // 按镜框名称搜索
+    List<FrameList> findByFrameClass(String state, String classification, Integer page, Integer size); // 用户前端 按分类筛选镜框
 }

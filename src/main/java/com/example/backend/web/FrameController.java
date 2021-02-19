@@ -5,6 +5,7 @@ import com.example.backend.core.ResultGenerator;
 import com.example.backend.model.Frame;
 import com.example.backend.service.FrameService;
 import com.example.backend.web.model.FrameDetail;
+import com.example.backend.web.model.FrameList;
 import com.example.backend.web.model.MyRequestBody;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -82,13 +83,13 @@ public class FrameController {
 
     @PostMapping("/search")
     public Result searchByFrameName(@RequestBody MyRequestBody myRequestBody){
-        List<Frame> list = frameService.searchByFrameName(myRequestBody.sortedBy);
+        List<FrameList> list = frameService.searchByFrameName(myRequestBody.sortedBy);
         return ResultGenerator.genSuccessResult(list);
     }
 
     @PostMapping("/class")
     public Result findByFrameClass(@RequestBody MyRequestBody myRequestBody){
-        List<Frame> list = frameService.findByFrameClass(myRequestBody.userID,myRequestBody.sortedBy,myRequestBody.page,myRequestBody.size);
+        List<FrameList> list = frameService.findByFrameClass(myRequestBody.userID,myRequestBody.sortedBy,myRequestBody.page,myRequestBody.size);
         return ResultGenerator.genSuccessResult(list);
     }
 }

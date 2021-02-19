@@ -15,4 +15,5 @@ public interface SpecMapper extends Mapper<Spec> {
     public List<Spec> productWarning(); // 查询库存不足的商品SKU
     public Spec findBySpecID(@Param("specID")String specID);
     public FrameColorResult findFrameSpec(@Param("specID")String specID);
+    public List<FrameColorResult> findFrameColors(@Param("productID")String productID);// 根据ID查询镜框所有颜色
 }

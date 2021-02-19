@@ -60,4 +60,12 @@
         FROM spec as s join color as c on (s.productSpec=c.colorID)
         WHERE specID=#{specID}
     </select>
+
+    <!--根据ID查询镜框所有颜色-->
+    <select id="findFrameColors" parameterType="String" resultType="com.example.backend.web.model.FrameColorResult">
+        SELECT s.specID,s.productID,c.colorID,c.colorName,c.colorImage,s.price,s.quantity,s.warning,s.specImage
+        FROM spec as s join color as c on (s.productSpec=c.colorID)
+        WHERE productID=#{productID}
+    </select>
+
 </mapper>

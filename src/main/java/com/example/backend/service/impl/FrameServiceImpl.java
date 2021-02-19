@@ -16,10 +16,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.example.backend.web.model.FrameColorResult;
-import com.example.backend.web.model.FrameDetail;
-import com.example.backend.web.model.ProductOverview;
-import com.example.backend.web.model.ValueList;
+import com.example.backend.web.model.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -120,12 +117,28 @@ public class FrameServiceImpl extends AbstractService<Frame> implements FrameSer
     }
 
     // 按镜框名称搜索
-    public List<Frame> searchByFrameName(String searchString){
-        return frameMapper.searchByFrameName("%"+searchString+"%");
+    public List<FrameList> searchByFrameName(String searchString){
+        List<Frame> frames = frameMapper.searchByFrameName("%"+searchString+"%");
+        List<FrameList> frameLists = new ArrayList<>();
+        for (Frame frame:frames){
+            FrameList frameList = new FrameList();
+            frameList.frame = frame;
+            frameList.colors = specMapper.findFrameColors(frame.getFrameID());
+            frameLists.add(frameList);
+        }
+        return frameLists;
     }
 
     // 按分类筛选镜框
-    public List<Frame> findByFrameClass(String state,String classification,Integer page,Integer size){
-        return frameMapper.findByFrameClass(state,"%"+classification+"%",page*size,size);
+    public List<FrameList> findByFrameClass(String state, String classification, Integer page, Integer size){
+        List<Frame> frames = frameMapper.findByFrameClass(state,"%"+classification+"%",page*size,size);
+        List<FrameList> frameLists = new ArrayList<>();
+        for (Frame frame:frames){
+            FrameList frameList = new FrameList();
+            frameList.frame = frame;
+            frameList.colors = specMapper.findFrameColors(frame.getFrameID());
+            frameLists.add(frameList);
+        }
+        return frameLists;
     }
 }
