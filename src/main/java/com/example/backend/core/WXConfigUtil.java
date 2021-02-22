@@ -11,12 +11,12 @@ import java.io.InputStream;
 public class WXConfigUtil implements WXPayConfig {
     private byte[] certData;
     public static final String APP_ID = "wx1b212dd990c8aa46";
-    public static final String KEY = "Shanhaimianshikeji2121yanjing518";
+    public static final String KEY = "1qliec8bpqwo9dnap0s98nas98dq22l3";
     public static final String MCH_ID = "1606291728";
 
     public WXConfigUtil() throws Exception {
         //String certPath = ClassUtils.getDefaultClassLoader().getResource("").getPath()+"/weixin/apiclient_cert.p12";//从微信商户平台下载的安全证书存放的路径
-        String certPath = "/usr/local/apiclient_cert.p12";// 【服务器】从微信商户平台下载的安全证书存放的路径
+        String certPath = "/usr/local/miniprogram/apiclient_cert.p12";// 【服务器】从微信商户平台下载的安全证书存放的路径
         File file = new File(certPath);
         InputStream certStream = new FileInputStream(file);
         this.certData = new byte[(int) file.length()];
