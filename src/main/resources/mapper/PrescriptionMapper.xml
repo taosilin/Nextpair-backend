@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.backend.dao.PrescriptionMapper">
+    <resultMap id="BaseResultMap" type="com.example.backend.model.Prescription">
+        <!--
+          WARNING - @mbg.generated
+        -->
+        <id column="prescriptionID" jdbcType="VARCHAR" property="prescriptionID" />
+        <result column="userID" jdbcType="VARCHAR" property="userID" />
+        <result column="prescriptionName" jdbcType="VARCHAR" property="prescriptionName" />
+        <result column="leftDegree" jdbcType="DECIMAL" property="leftDegree" />
+        <result column="rightDegree" jdbcType="DECIMAL" property="rightDegree" />
+        <result column="interpupillary" jdbcType="INTEGER" property="interpupillary" />
+        <result column="leftAstigmatism" jdbcType="DECIMAL" property="leftAstigmatism" />
+        <result column="rightAstigmatism" jdbcType="DECIMAL" property="rightAstigmatism" />
+        <result column="leftAxis" jdbcType="INTEGER" property="leftAxis" />
+        <result column="rightAxis" jdbcType="INTEGER" property="rightAxis" />
+
+    </resultMap>
+
+    <!--新增验光单-->
+    <insert id="addPrescription" parameterType="com.example.backend.model.Prescription" >
+        INSERT INTO prescription ( prescriptionID,userID,prescriptionName,leftDegree,rightDegree,interpupillary,leftAstigmatism,rightAstigmatism,leftAxis,rightAxis )
+        values ( #{prescriptionID},#{userID},#{prescriptionName},#{leftDegree},#{rightDegree},#{interpupillary},#{leftAstigmatism},#{rightAstigmatism},#{leftAxis},#{rightAxis} )
+    </insert>
+
+    <!--删除验光单-->
+    <delete id="deleteByPrescriptionID" parameterType="String">
+        DELETE FROM prescription WHERE prescriptionID = #{prescriptionID}
+    </delete>
+
+    <!--编辑验光单-->
+    <update id="updatePrescription" parameterType="com.example.backend.model.Prescription">
+        UPDATE prescription
+        SET prescriptionName=#{prescriptionName},leftDegree=#{leftDegree},rightDegree=#{rightDegree},interpupillary=#{interpupillary},leftAstigmatism=#{leftAstigmatism},rightAstigmatism=#{rightAstigmatism},leftAxis=#{leftAxis},rightAxis=#{rightAxis}
+        WHERE prescriptionID=#{prescriptionID}
+    </update>
+
+    <!--用户验光单列表-->
+    <select id="userPrescriptionList" parameterType="String" resultType="com.example.backend.model.Prescription">
+        SELECT *
+        FROM prescription
+        WHERE userID=#{userID}
+    </select>
+
+    <!--根据ID查询验光单详情-->
+    <select id="findByPrescriptionID" parameterType="String" resultType="com.example.backend.model.Prescription">
+        SELECT *
+        FROM prescription
+        WHERE prescriptionID=#{prescriptionID}
+    </select>
+
+</mapper>
